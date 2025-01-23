@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move Button Randomly</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+        button {
+            padding: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            position: absolute;
+            border-radius: 50%;
+            background-color: red;
+            border: none;
+        }
+        #counter {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="moveButton"></button>
+    <div id="counter">Click Count: 0</div>
+
+    <script>
+        // Initialize counter
+        let clickCount = 0;
+        let resetTimer;
+
+        // Get the button and counter elements
+        const button = document.getElementById('moveButton');
+        const counter = document.getElementById('counter');
+
+        // Function to move the button to a random position
+        function moveButton() {
+            // Get the width and height of the window
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            // Generate random positions for the button
+            const randomX = Math.floor(Math.random() * (windowWidth - button.offsetWidth));
+            const randomY = Math.floor(Math.random() * (windowHeight - button.offsetHeight));
+
+            // Set the new position of the button
+            button.style.left = `${randomX}px`;
+            button.style.top = `${randomY}px`;
+
+            // Increase the click count
+            clickCount++;
+
+            // Update the counter display
+            counter.textContent = `Click Count: ${clickCount}`;
+
+            // Reset counter after 1.5 seconds
+            resetCounterAfterDelay();
+        }
+
+        // Function to reset the counter
+        function resetCounter() {
+            clickCount = 0;
+            counter.textContent = `Click Count: 0`;
+        }
+
+        // Function to reset counter after 1.5 seconds
+        function resetCounterAfterDelay() {
+            // Clear any existing timer to avoid multiple resets
+            clearTimeout(resetTimer);
+
+            // Set a new timer to reset after 1.5 seconds (1500 milliseconds)
+            resetTimer = setTimeout(resetCounter, 1500);
+        }
+
+        // Add event listener for the button click
+        button.addEventListener('click', moveButton);
+
+        // Add an event listener for clicking anywhere else on the body to reset the counter
+        document.body.addEventListener('click', function(event) {
+            // Check if the clicked area is not the button
+            if (event.target !== button) {
+                resetCounter();
+            }
+        });
+
+    </script>
+
+</body>
+</html>
